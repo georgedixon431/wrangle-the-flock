@@ -11,7 +11,7 @@ import time
 
 MODEL_PATH = r"C:\Users\George\uni\380\sheepmodel\weights\best.pt"
 
-ESP32_URL = "http://10.0.0.16/cam.jpg"
+ESP32_URL = "http://10.0.0.25/cam.jpg"
 
 # Same image size used during training
 MODEL_IMAGE_SIZE = 320
