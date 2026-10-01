@@ -6,9 +6,9 @@ import cv2
 # SETTINGS
 # =========================================================
 
-MODEL_PATH = r"C:\Users\George\uni\380\sheepmodel\weights\best.pt"
+MODEL_PATH = r"C:\Users\George\uni\380\380 code\sheepmodel\weights\best.pt"
 
-TEST_FOLDER = r"C:\Users\George\uni\380\sheep photos\test\images"
+TEST_FOLDER = r"C:\Users\George\uni\380\380 code\sheep photos\test\images"
 
 # Size used BY THE MODEL
 MODEL_IMAGE_SIZE = 320

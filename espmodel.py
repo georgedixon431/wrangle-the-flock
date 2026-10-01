@@ -13,13 +13,13 @@ import time
 
 MODEL_PATH = r"C:\Users\George\uni\380\380 code\sheepmodel\weights\best.pt"
 
-CAMERA_URL = "http://10.0.0.25/cam.jpg"
+CAMERA_URL = "http://10.0.0.18/cam.jpg"
 
 # IP address of MOTOR ESP32
-ESP32_IP = "10.0.0.XX"   # CHANGE THIS
+ESP32_IP = "10.0.0.20"   # CHANGE THIS
 ESP32_PORT = 8080
 
-MODEL_IMAGE_SIZE = 640
+MODEL_IMAGE_SIZE = 320
 DISPLAY_WIDTH = 900
 
 CONFIDENCE = 0.9
@@ -28,7 +28,6 @@ IOU_THRESHOLD = 0.45
 USE_GPU = False
 
 TARGET_SHEEP = 1
-
 
 # Require 10 sheep for this many consecutive frames
 REQUIRED_FRAMES = 3

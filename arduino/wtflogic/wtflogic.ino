@@ -1,4 +1,5 @@
 #include <WiFi.h>
+#include <ESP32Servo.h>
 
 // ==========================================
 // SYSTEM SEQUENCE
@@ -13,29 +14,33 @@
 // ==========================================
 
 
-// ---------- WiFi ----------
+// WiFi 
 const char* WIFI_SSID = "ORBI80";
 const char* WIFI_PASS = "rockypotato037";
 
 WiFiServer server(8080);
 
 
-// ---------- M1 / MD1 ----------
-const int M1_RPWM = 13;
-const int M1_LPWM = 12;
+//M1 / MD1
+const int M1_RPWM = 25;
+const int M1_LPWM = 33;
 
 
-// ---------- M2 / MD2 ----------
-const int M2_RPWM = 32;
-const int M2_LPWM = 33;
+//M2 / MD2
+const int M2_RPWM = 13;
+const int M2_LPWM = 12;
+
+//Microswitches 
+const int LEFT_SWITCH  = 26;
+const int RIGHT_SWITCH = 27;
+
+Servo myServo;
+
+const int SERVO_PIN = 32;
+int ServoPosition = 0;
 
 
-// ---------- Microswitches ----------
-const int LEFT_SWITCH  = 18;
-const int RIGHT_SWITCH = 5;
-
-
-// ---------- System states ----------
+//  System states
 enum SystemState {
   M1_FORWARD,
   M2_RUNNING,
@@ -45,9 +50,7 @@ enum SystemState {
 SystemState state = M1_FORWARD;
 
 
-// ==========================================
 // MOTOR FUNCTIONS
-// ==========================================
 
 void stopM1() {
   digitalWrite(M1_RPWM, LOW);
@@ -55,13 +58,13 @@ void stopM1() {
 }
 
 void forwardM1() {
-  digitalWrite(M1_RPWM, HIGH);
-  digitalWrite(M1_LPWM, LOW);
+  digitalWrite(M1_RPWM, LOW);
+  digitalWrite(M1_LPWM, HIGH);
 }
 
 void reverseM1() {
-  digitalWrite(M1_RPWM, LOW);
-  digitalWrite(M1_LPWM, HIGH);
+  digitalWrite(M1_RPWM, HIGH);
+  digitalWrite(M1_LPWM, LOW);
 }
 
 void stopM2() {
@@ -95,19 +98,26 @@ void setup() {
   pinMode(M2_LPWM, OUTPUT);
 
 
-  // ---------- Microswitches ----------
+  //Microswitches
 
   pinMode(LEFT_SWITCH, INPUT_PULLUP);
   pinMode(RIGHT_SWITCH, INPUT_PULLUP);
 
 
-  // ---------- Make motors safe initially ----------
+  // Make motors safe initially
 
   stopM1();
   stopM2();
 
+  // servo setup
 
-  // ---------- Connect WiFi ----------
+  myServo.setPeriodHertz(50);
+  myServo.attach(SERVO_PIN, 500, 2500);
+  ServoPosition = 0;
+  Serial.println("gate open");
+
+
+  //Connect WiFi 
 
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID, WIFI_PASS);
@@ -177,6 +187,9 @@ void loop() {
       // Small pause
       delay(1000);
 
+      //close gate
+      ServoPosition = 180;
+
       // Run M1 in opposite direction
       reverseM1();
 
@@ -234,6 +247,6 @@ void loop() {
     }
   }
 
-
+  myServo.write(ServoPosition);
   delay(20);
 }
